@@ -1,0 +1,38 @@
+
+    <html>
+    <head>
+      <meta charset='utf-8'>
+      <title></title>
+      <style>
+        html,body{margin:0px;padding:0;overflow:hidden;border:0;width:100%;height:100%;}
+    </style>
+    </head>
+    <body>
+    </body>
+            <script>
+                let temp = 10;
+                window.document.body.onclick = function(){
+                    temp = temp + 1;
+                }
+                setInterval(function () {
+                    temp = temp - 1;
+                    console.log(temp);
+                    if (temp === 0){
+                        alert("由于您长时间未操作，将回到欢迎页面壁纸模块")
+                        window.location.href="http://127.0.0.1:5000/";
+                        document.getElementById('a')
+                        a.document.write(temp);
+                    }
+                },10000);
+
+
+
+            </script>
+            <script src="../static/lesson/pixi.min.js"></script>
+            <script src="../static/lesson/laya.core.js"></script>
+            <script src="../static/lesson/laya.webgl.js"></script>
+            <script src="../static/lesson/laya.ui.js"></script>
+            <script src="../static/lesson/laya.ani.js"></script>
+            <script src="../static/lesson/laya.d3.js"></script>
+            <script type="text/javascript" src="../static/index.js"></script>
+    </html>

@@ -1,0 +1,57 @@
+import time
+
+from bs4 import BeautifulSoup
+import requests
+import re
+import json
+
+# 第一步，发请求，想法请求就要有request库，要有url链接
+url1 = "https://voice.baidu.com/act/newpneumonia/newpneumonia/?from=osari_aladin_banner"
+url = "https://motion.baidu.com/activity/yiqing_predict/main?province=%E5%85%A8%E5%9B%BD"
+# 伪装防止反扒
+Headers = {
+    'Cache-Control': 'max-age=0',
+    'Connection': 'keep-alive',
+    'Cookie': 'BIDUPSID=0D54C69E299437B4C12ABA60CFB4EB89; PSTM=1658573967; BD_UPN=12314753; H_WISE_SIDS=110085_189755_194530_204912_205161_208607_209568_210321_211435_211986_212296_213041_213359_214804_215730_216207_216841_216942_218549_218567_219472_219623_219744_219942_219946_220014_220071_220663_221120_221318_221410_221479_221502_221679_221916_222211_222299_222396_222425_222463_222522_222625_223063_223209_223238_223374_223596_223892_224046_224055_224077_224268_224315_224456_224754_224981_225246_225334_225437_225641_225739_225853_225859_225863_226014_226020_226027_226087_226125_226287_226295_226299_226599_226725_226756_226955_227044_227061_227065_227155_227218_227272_227427_227490_227515_227530_227538_227592_227613_227744_227865_227895_227983_228032_228114_228202_228221_228247_228372_228419_228505_228509_228532_228572_228575_228609_228668_228837_228958; H_WISE_SIDS_BFESS=110085_189755_194530_204912_205161_208607_209568_210321_211435_211986_212296_213041_213359_214804_215730_216207_216841_216942_218549_218567_219472_219623_219744_219942_219946_220014_220071_220663_221120_221318_221410_221479_221502_221679_221916_222211_222299_222396_222425_222463_222522_222625_223063_223209_223238_223374_223596_223892_224046_224055_224077_224268_224315_224456_224754_224981_225246_225334_225437_225641_225739_225853_225859_225863_226014_226020_226027_226087_226125_226287_226295_226299_226599_226725_226756_226955_227044_227061_227065_227155_227218_227272_227427_227490_227515_227530_227538_227592_227613_227744_227865_227895_227983_228032_228114_228202_228221_228247_228372_228419_228505_228509_228532_228572_228575_228609_228668_228837_228958; MAWEBCUID=web_OwniafiBEWIujBWTknmLKdnRlbHQGRAtqxeEBTcCMtmfKIOTlb; newlogin=1; BAIDUID=2E46139F5450F099D0F2B7F921AD1E6E:FG=1; BDUSS=Dc2a0F5bUt3WHo2N1NJZ1ZmR0hOREZ4ZFNwa3Fsa3dJTnA2Vndqc1NLflN3NzlqRVFBQUFBJCQAAAAAAAAAAAEAAAA14ztis8LIyrbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANI2mGPSNphjc; BDUSS_BFESS=Dc2a0F5bUt3WHo2N1NJZ1ZmR0hOREZ4ZFNwa3Fsa3dJTnA2Vndqc1NLflN3NzlqRVFBQUFBJCQAAAAAAAAAAAEAAAA14ztis8LIyrbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANI2mGPSNphjc; BDORZ=B490B5EBF6F3CD402E515D22BCDA1598; BD_HOME=1; H_PS_PSSID=37782_36560_37973_37647_37552_37907_37623_37883_37800_36803_37938_37902_26350_37788_37881; delPer=0; BD_CK_SAM=1; PSINO=1; BA_HECTOR=2kakah8l0hag012184058m0v1hqgfl61j; channel=baidusearch; BAIDUID_BFESS=2E46139F5450F099D0F2B7F921AD1E6E:FG=1; ZFY=vqHnKOC4tqip38WDVBqduwSzHViDIaQPuIu2oTF6peE:C; B64_BOT=1; COOKIE_SESSION=13_2_7_7_10_8_1_0_7_2_0_0_438_0_7_0_1671593709_1671591423_1671593702%7C9%231618084_12_1671591419%7C9; RT="z=1&dm=baidu.com&si=b0b4bf97-5561-47e2-b835-16c020937339&ss=lc3c66s0&sl=2&tt=2oq&bcn=https%3A%2F%2Ffclog.baidu.com%2Flog%2Fweirwood%3Ftype%3Dperf&ld=2s9&nu=j2lsj8s&cl=7jr"; FEID=v10-d353d3dd870bf0863f46dd532c894b5a29663015; __xaf_fpstarttimer__=1671970755654; __xaf_ths__={"data":{"0":1,"1":43200,"2":60},"id":"17ca310d-7f03-43d6-a40b-9c8374310fb3"}; __xaf_thstime__=1671970755953; FPTOKEN=3udFzTEzACy3XOYfYvcwLdnJBSu1cP/ZszDSKNbGaDNTefTCpz/f34oy31d5ZoyYdoWzK+UKMxPb1uVtfcc3YIe4jktv528YAWt+eqmGTL0LpB3SeJhMg6yCSPPB+dSqTC93MdqogcSYB5XShp4nTYUGqtVwBIRaMt0dd866gjt/QyTSP1MU36Cys5FV0L8/9BKpEs6bIwRXrfcewsqOdYswLWqXjpwdF0Seknv8HE2p2F0JXsLl5DkDLD7W8nst3kVJTwb4HPRYB1K1igquetrtyR8if7YC04q/OQM/NcFGJLQqD0CbrnL/COCu0wbeQRHU1uz5FWnxXpDD3NWy1zTw8AkGlKoLTkvS/LjpjlZe8J3tKpa8iARdhdRdRhyCSgGPhIsAlp1+yqE2JGyBfg==|h/655JhXfeRLbGFlm4FA8w6jIF86gg0ppdvtK/tL5vM=|10|99fb438fa19a5d463cdce0a24115fd91; __xaf_fptokentimer__=1671970756036; ZD_ENTRY=baidu; __bid_n=185493a64a93166d594207; ab_sr=1.0.1_OTg1MWU5ZGJjZmUxMzYzNTVkYjhkMDI3ZTIzYzIwOGRmNjIxZGQzYzAxMTkxODVmYjA3YzBiNmY5YTZmMTA2ZGQzM2JiOGE0ZWQ5MWRmY2E3NTkyZTE4MDNiZDMwODQyYmYxNzdlNmJjOTc3MGUxODcwM2I4M2FmN2QyNDBiMTI1ODE4YmIzNmNlNjRlNTk1ZjAwMTJhNWJlNDIwM2Q2NWY3YmRjMmViNzAyNDNkZWZiNmY2ZDc3NGVmYzk2MTM5; baikeVisitId=54360bab-d972-4609-b452-3628f0379019; sugstore=1; H_PS_645EC=1624NAZKLahsXOqZYRLV%2FYaRfLorY1DNh0z1KzOo%2F0wGwLmYjiIOCGQQxoY',
+    'Host': 'www.baidu.com',
+    'sec-ch-ua': '"Not?A_Brand";v="8", "Chromium";v="108", "Microsoft Edge";v="108"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-platform': '"Windows"',
+    'Sec-Fetch-Dest': 'document',
+    'Sec-Fetch-Mode': 'navigate',
+    'Sec-Fetch-Site': 'none',
+    'Sec-Fetch-User': '?1',
+    'Upgrade-Insecure-Requests': '1',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.54'
+}
+# 将头添加至get（）方法内，发送请求
+response = requests.get(url=url)
+# 2.获取数据
+html_data = response.text
+print(html_data)
+# 解析数据，输出一个列表
+print(re.findall('"component":\[(.*)\],',html)[0])
+json_data = re.findall('"component":\[(.*)\],', html_data)[0]
+print(json_data)
+# print(json_data)
+# 转换字典
+json_dict = json.loads(json_data)  # 全球json数据
+caseList = json_dict['caseList']  # 中国疫情数据
+# print(json_dict)
+# 打开文本，如不存在创建文本，想实现这个需要将后面参数改为a
+f1 = open("../beautifulsoup/json/theWholeWorld.json", "w")
+f2 = open("../beautifulsoup/json/China.json", "w")
+# 使用dump转化为json格式数据，参数1：列表文本，参数2打开的json文件（所要存储的文本对象）
+json.dump(json_dict, f1, indent=5)  # 使用ident参数设置间隔为5，以达到格式化json文件内容效果
+json.dump(caseList, f2, indent=5)
+f1.close()
+f2.close()
+
+for case in caseList:
+    died = case['died']  # 死亡数
+    area = case['area']  # 省份
+    confirmed = case['confirmed']  # 累计确诊
+    curConfirmRelative = case['curConfirmRelative']  # 当前确诊人数
+    curConfirm = case['curConfirm']  # 新增确诊
+    crued = case['crued']  # 治愈人数
+    print(area, died, crued, curConfirm, curConfirmRelative, confirmed)

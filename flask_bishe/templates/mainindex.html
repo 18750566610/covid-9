@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../static/Echars/Echars.js"></script>
+    <script src="../static/Echars/jquery-3.3.1.min.js"></script>
+    <script src="../static/Echars/bmap.js"></script>
+    <script src="../static/Echars/china.js"></script>
+
+    <style>
+        body{
+            width:75%;
+            height: 75%;
+        }
+        @font-face {
+            font-family: "Microsoft1";
+            src: url("../static/Font/STXINGKA.TTF");
+        }
+        @font-face {
+            font-family: "Microsoft3";
+            src: url("../static/Font/STKAITI.TTF");
+        }
+        #box3{
+            position: absolute;
+            top: 630px;
+            left: 1800px;
+        }
+        #map{
+            position: absolute;
+            top: 0;
+            left: 876px;
+        }
+        #l1 {
+            position: absolute;
+            width: 30%;
+            height: 45%;
+            top: 700px;
+            left: 1000px;
+        }
+        #r1{
+            position: absolute;
+            top: 700px;
+        }
+        #a1{
+            text-decoration: none;
+            font-size: 26px;
+            font-family: Microsoft1;
+            writing-mode: tb-rl;
+            position: absolute;
+            top: 850px;
+            left: 750px;
+        }
+        #div1{
+            font-size: 26px;
+            font-family: Microsoft1;
+        }
+        #div3{
+            font-size: 26px;
+            font-family: Microsoft1;
+            position: absolute;
+            top: 710px;
+            left: 1050px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div id="box" style="width: 2460px;height: 1100px;"></div>
+<div id="box1" style="width: 710px;height: 710px;"></div>
+
+<div id="box3" style="width: 600px;height: 600px;background-color: rgb(255, 255, 255);"></div>
+<div id="map" style="width: 1500px;height: 690px"></div>
+<div id="l1" style="width: 700px;height: 650px"></div>
+<div id="r1" style="width: 700px;height: 550px"></div>
+<script src="../static/Echars/welcome.js"></script>
+<script src="../static/Echars/jss.js"></script>
+<script src="../static/Echars/time.js"></script>
+<!-- <script src="./wholeWorld.js"></script> -->
+<script src="../static/Echars/map.js"></script>
+<script src="../static/Echars/left.js"></script>
+<script src="../static/Echars/right1.js"></script>
+<script src="../static/Echars/controller.js"></script>
+<a href="http://192.168.1.105:5000/theWholeWorld" id="a1" onclick="jump()"> 点击跳转世界疫情界面</a>
+<div id="div1">全国个省市累计确诊TOP5</div>
+<div id="div3">今日新增确诊</div>
+<script>
+    var a = document.getElementById('box');
+    var b = document.getElementById('box1');
+    var c = document.getElementById('box3');
+    var map = document.getElementById('map');
+    var table_left1 = document.getElementById('l1');
+    var table_right2 = document.getElementById('r1');
+    var div1 = document.getElementById('div1');
+    var div3 = document.getElementById('div3');
+    var a1 = document.getElementById('a1');
+    b.style.display = 'none';
+    c.style.display = 'none';
+    map.style.display = 'none';
+    table_left1.style.display = 'none';
+    table_right2.style.display = 'none';
+    div1.style.display = 'none';
+    div3.style.display = 'none';
+    a1.style.display = 'none';
+    setTimeout(function(){
+        a.style.display = 'none';
+        console.log(a.style.display);
+        b.style.display = 'block';
+        c.style.display = 'block';
+        map.style.display = 'block';
+        table_left1.style.display = 'block';
+        table_right2.style.display = 'block';
+        div1.style.display = 'block';
+        div3.style.display = 'block';
+        a1.style.display = 'block'
+    },4000)
+
+</script>
+<script>
+    let temp = 10;
+    window.document.body.onclick = function(){
+        temp = temp + 1;
+    }
+    setInterval(function () {
+        temp = temp - 1;
+        console.log(temp);
+        if (temp === 0){
+            window.location.href="http://localhost:5000/";
+            alert("由于您长时间未操作，将回到欢迎页面壁纸模块")
+            document.getElementById('a')
+            a.document.write(temp);
+        }
+    },10000);
+</script>
+<script>
+    function jump() {
+        document.location.href = "http://localhost:5000/theWholeWorld"
+    }
+</script>
+</body>
+</html>

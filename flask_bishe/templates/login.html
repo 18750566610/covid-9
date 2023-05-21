@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../static/Echars/echarts.min.js"></script>
+    <script src="../static/Echars/jquery-3.3.1.min.js"></script>
+    <script src="../static/Echars/world.js"></script>
+
+</head>
+<body>
+<script src="http://api.map.baidu.com/api?v=3.0&ak=PlhFWpA02aoURjAOpnWcRGqw7AI8EEyO"></script>
+<!-- <div id="box" style="width: 1920px;height: 1080px;"></div>
+<div id="box1" style="width: 600px;height: 600px;"></div> -->
+<!--<div id="map" style="width: 2550px;height: 1233px;"></div>-->
+
+<div id="map" style="width: 1900px;height: 951px;"></div>
+<script src="../static/echarts-5.3.3/dist/extension/bmap.min.js"></script>
+<script src="../static/Echars/worldMap.js"></script>
+<script>
+    window.document.body.ondblclick = function () {
+        window.location.href = "http://127.0.0.1:5000/theWholeWorld"
+    }
+</script>
+
+</body>
+</html>

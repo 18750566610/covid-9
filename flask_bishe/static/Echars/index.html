@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../Echars/Echars.js"></script>
+    <script src="../Echars/jquery-3.3.1.min.js"></script>
+    <script src="../Echars/bmap.js"></script>
+    <script src="./china.js"></script>
+
+    <style>
+        #box3{
+            position: absolute;
+            top: 630px;
+            left: 1800px;
+        }
+        #map{
+            position: absolute;
+            top: 0;
+            left: 876px;
+        }
+    </style>
+
+</head>
+<body>
+<div id="box" style="width: 2460px;height: 1100px;"></div>
+<div id="box1" style="width: 710px;height: 710px;"></div>
+<script src="./aaa.js"></script>
+<script src="./jss.js"></script>
+<div id="box3" style="width: 600px;height: 600px;background-color: rgb(255, 255, 255);"></div>
+<div id="map" style="width: 1500px;height: 690px"></div>
+<div id=""></div>
+<script src="./time.js"></script>
+<!-- <script src="./wholeWorld.js"></script> -->
+<script src="./map.js"></script>
+<script src="controller.js"></script>
+
+<script>
+var a = document.getElementById('box')
+var b = document.getElementById('box1')
+var c = document.getElementById('box3')
+var map = document.getElementById('map')
+
+b.style.display = 'none'
+c.style.display = 'none'
+map.style.display = 'none'
+setTimeout(function(){
+    a.style.display = 'none'
+    console.log(a.style.display)
+    b.style.display = 'block'
+    c.style.display = 'block'
+    map.style.display = 'block'
+},4000)
+
+</script>
+</body>
+</html>
